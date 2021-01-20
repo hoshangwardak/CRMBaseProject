@@ -10,5 +10,6 @@ public class TC_00 {
         // branching
         //bom bom bom
 
+        System.out.println("Hello");
     }
 }
