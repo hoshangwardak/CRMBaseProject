@@ -5,10 +5,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.security.Key;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class TestCase_01_VerificationOfPollTab {
@@ -44,23 +47,50 @@ public class TestCase_01_VerificationOfPollTab {
     }
 
     @Test
-    public void testCase_01() {
+    public void testCase_01() throws InterruptedException {
 
 
         WebElement pollClicking = driver.findElement(By.xpath("//span[@id='feed-add-post-form-tab-vote']"));
         pollClicking.click();
 
-        WebElement iframe = driver.findElement(By.xpath("//body[@contenteditable='true']"));
+        WebElement iframe1 = driver.findElement(By.xpath("//iframe[@class='bx-editor-iframe']"));
 
-        driver.switchTo().frame(iframe);
+        driver.switchTo().frame(iframe1); // Penetrating to the inner iframe from outer iframe
         //driver.switchTo().frame(1);
 
-        WebElement iframeBoxWriting = driver.findElement(By.xpath("(//iframe[@class='width: 100%; height: 100%;']"));
+        //WebElement inputBox = driver.findElement(By.xpath("//body[@style='min-height: 184px;']"));
+        WebElement inputBox = driver.findElement(By.xpath("//body[@contenteditable='true']"));
+        Thread.sleep(2000);
+        inputBox.click();
+        Thread.sleep(2000);
+        inputBox.sendKeys("Title for the Poll");
 
-        iframeBoxWriting.sendKeys("I am trying to create a poll");
+        driver.switchTo().parentFrame();
+
+        WebElement questionInputBox = driver.findElement(By.id("question_0"));
+        Thread.sleep(2000);
+        questionInputBox.click();
+        questionInputBox.sendKeys("Does anyone have a question about this poll?");
+        Thread.sleep(2000);
+
+        List<WebElement> answerBoxes = driver.findElements(By.xpath("(//input[@class='vote-block-inp adda'])"));
+        int count = 0;
+        for (WebElement eachBox : answerBoxes) {
+            Thread.sleep(2000);
+            eachBox.click();
+            eachBox.sendKeys("Answer" + count++ + " " + Keys.ENTER);
+        }
+
+        WebElement sendButton = driver.findElement(By.id("blog-submit-button-save"));
+        Thread.sleep(2000);
+        sendButton.click();
 
 
+    }
 
+    @AfterClass
+    public void tearDownClass() {
+        driver.close();
     }
 
 }
