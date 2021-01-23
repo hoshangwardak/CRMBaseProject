@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="nextBaseCRM" />
         <module name="CRMBaseProject" />
+        <module name="Selenium" />
       </profile>
     </annotationProcessing>
   </component>
