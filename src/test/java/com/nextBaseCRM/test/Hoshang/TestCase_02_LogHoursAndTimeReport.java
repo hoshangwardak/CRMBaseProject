@@ -4,6 +4,7 @@ import com.nextBaseCRM.test.Utilities.WebDriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -44,25 +45,37 @@ public class TestCase_02_LogHoursAndTimeReport {
     @Test
     public void test1() throws InterruptedException {
 
-        WebElement clockInTab = driver.findElement(By.id("timeman-background"));
+        WebElement clockInTab = driver.findElement(By.id("timeman-status"));
         Thread.sleep(2000);
         clockInTab.click();
 
 
-        WebElement clockInButton = driver.findElement(By.xpath("//span[@class='webform-small-button-text']"));
+        WebElement clockInButton = driver.findElement(By.xpath("//*[@class='tm-popup-button-handler']"));
         Thread.sleep(2000);
         clockInButton.click();
+        Thread.sleep(3000);
 
+        WebElement changeMessage = driver.findElement(By.xpath("//span[@class='tm-popup-change-time-link']"));
+        System.out.println(changeMessage.getText());
+
+
+
+        //Assert.assertTrue(clockInPopUpWindow.isDisplayed(),"IT DID NOT DISPLAYED SO FAILED!!!");
+
+        WebElement clockOutRedButton = driver.findElement(By.xpath("//*[@class='webform-small-button-text']"));
+        Thread.sleep(2000);
+        clockOutRedButton.click();
+
+        WebElement messageClockOut = driver.findElement(By.xpath("//span[@class='webform-small-button-text']"));
+        System.out.println(messageClockOut.getText());
+
+        Assert.assertTrue(changeMessage.isDisplayed(), "IT DID NOT DISPLAYED SO FAILED!!!");
 
 
 
 
     }
 
-    @AfterClass
-    public void tearDownClass() {
-        driver.close();
-    }
 
 
 
